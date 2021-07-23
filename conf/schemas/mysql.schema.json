@@ -1,0 +1,35 @@
+{
+	"customTables":{},
+	"globalTables":{},
+	"normalTables":{
+		"book":{
+			"createTableSQL":"CREATE TABLE IF NOT EXISTS BOOK\n\t(\n\t	`id` bigint(20) AUTO_INCREMENT COMMENT '自增ID主键',\n\t	`title` varchar(128) not null COMMENT '书名',\n\t	`author_id` bigint(20) not null COMMENT '作者ID', \n\t	`author_name` varchar(128) not null COMMENT '作者名字，冗余信息',\n\t	`status` tinyint(4) not null default 0 COMMENT '书籍状态，0-连载，1-完结，2-待扩展',\n\t	`book_type_id` tinyint(4) not null default 0 COMMENT '书籍主类型，0-其他，1-玄幻，2-奇幻，3-武侠，4-仙侠，5-都市，6-现实，7-军事，8-历史，9-游戏，10-体育，11-科幻，12-悬疑，13-女生，14-轻小说',\n\t	`book_sub_type_id` tinyint(4) not null default 0 COMMENT '书籍次级分类',\n\t	`tags` varchar(128) not null COMMENT '书籍slogan',\n\t	`slogan` varchar(128) not null COMMENT '书籍slogan',\n\t	`summary` varchar(512) not null COMMENT '书籍摘要',\n\t	`word_count` int(11) not null default 0 COMMENT '当前字数',\n\t	`recommendation_count` int(11) not null default 0 COMMENT '总推荐数',\n\t	`read_count` int(11) not null default 0 COMMENT '总浏览数',\n\t	`follow_count` int(11) not null default 0 COMMENT '总收藏数（收藏到书架）',\n\t	`score` int(11) not null default 0 COMMENT '总评分，87=8.7分，总分100=10分',\n\t	`create_time` int(11) not null default 0 COMMENT '记录创建时间',\n\t	`update_time` int(11) not null default 0 COMMENT '记录更新时间',\n\t	PRIMARY KEY (`id`),\n\t	KEY `idx_author_id` (`author_id`)\n\t)ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4 COMMENT = '书籍核心信息表';",
+			"locality":{
+				"schemaName":"mysql",
+				"tableName":"book",
+				"targetName":"book"
+			}
+		},
+		"book_chapter":{
+			"createTableSQL":"CREATE TABLE IF NOT EXISTS BOOK_CHAPTER\n\t(\n\t	`id` bigint(20) AUTO_INCREMENT COMMENT '自增ID主键',\n\t	`book_id` bigint(20) not null COMMENT '书籍ID',\n\t	`book_volume_id` bigint(20) not null COMMENT '书籍卷ID', \n\t	`chapter_name` varchar(128) not null COMMENT '章节名称',\n\t	`count` int(11) not null default 0 COMMENT '章节字数',\n\t	`rows` int(11) not null default 0 COMMENT '章节段数',\n\t	`status` tinyint(4) not null default 0 COMMENT '章节状态，0-发布，1-审核通过，2-审核拒绝，3-上架，4-下架，5-删除',\n\t	`create_time` int(11) not null default 0 COMMENT '记录创建时间',\n\t	`update_time` int(11) not null default 0 COMMENT '记录更新时间',\n\t	PRIMARY KEY (`id`),\n\t	KEY `idx_book_id` (`book_id`),\n\t	KEY `idx_book_volume_id` (`book_volume_id`)\n\t)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4 COMMENT = '书籍目录表';",
+			"locality":{
+				"schemaName":"mysql",
+				"tableName":"book_chapter",
+				"targetName":"book"
+			}
+		},
+	},
+	"schemaName":"mysql",
+	"shadingTables":{
+		"book_chapter": {
+	      "function": {
+	        "properties": {
+	          "dbNum": "1",//分库数量
+	          "tableNum": "4",//分表数量
+	          "tableMethod": "mod_hash(book_id)",//分表分片函数
+	          "storeNum": 1,//实际存储节点数量
+	        }
+	      }
+	},
+	"targetName":"book"
+}

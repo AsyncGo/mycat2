@@ -1,0 +1,7 @@
+{
+	"dialect":"mysql",
+	"ip":".",
+	"password":"test",
+	"transactionType":"xa",
+	"username":"test"
+}
